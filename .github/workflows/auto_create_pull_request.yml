@@ -18,7 +18,7 @@ jobs:
             return github.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: develop to master,
+              title: 'develop to master',
               head: 'develop',
               base: 'main'
             })
