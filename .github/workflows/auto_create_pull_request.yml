@@ -10,25 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Get branch name
+        id: get-branch-name
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        run: echo '::set-output name=BRANCH_NAME::${GITHUB_REF#refs/heads/}',
+
       - name: Exist Pull Request
-        id: exist_pull_request
+        id: exist-pull-request
         uses: actions/github-script@v4
         with:
           script: |
             return github.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head: 'develop',
+              head: ${{ steps.get-branch-name.outputs.BRANCH_NAME }},
               base: 'main',
               state: 'open',
             })
 
-      - run: echo "${GITHUB_REF_CONTEXT#refs/heads/}"
-        env:
-          GITHUB_REF_CONTEXT: ${{ github.ref }}
-
       - name: Create Pull Request
-        if: fromJSON(steps.exist_pull_request.outputs.result).status != 200
+        if: fromJSON(steps.exist-pull-request.outputs.result).status != 200
         uses: actions/github-script@v4
         with:
           script: |
@@ -36,6 +38,6 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: 'develop to master',
-              head: 'develop',
+              head: ${{ steps.get-branch-name.outputs.BRANCH_NAME }},
               base: 'main'
             })
