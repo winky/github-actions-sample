@@ -23,6 +23,7 @@ jobs:
               base: 'main',
               state: 'open',
             })
+            console.log(pr.data)
 
             if (!pr.data) {
               github.pulls.create({
