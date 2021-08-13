@@ -10,11 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Create Pull Request
+      - name: Exist Pull Request
+        id: exist_pull_request
         uses: actions/github-script@v4
         with:
           script: |
-            const pr = awit github.pulls.list({
+            return github.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
               head: 'develop',
@@ -22,11 +23,13 @@ jobs:
               state: 'open',
             })
 
-            if (pr.status === 200) {
-              return
-            }
+      - run: echo ${{ fromJSON(steps.exist_pull_request.outputs.result)['status'] }} 
 
-            github.pulls.create({
+      - name: Create Pull Request
+        uses: actions/github-script@v4
+        with:
+          script: |
+            return github.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: 'develop to master',
