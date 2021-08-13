@@ -31,8 +31,8 @@ jobs:
               state: 'open',
             })
 
-      - run: echo ${{ fromJSON(steps.exist-pull-request.outputs.result).data.url }}
-      - run: echo ${{ contains(fromJSON(steps.exist-pull-request.outputs.result).data, 'url') }}
+      - run: echo ${{ fromJSON(steps.exist-pull-request.outputs.result).data }}
+      - run: echo ${{ contains(fromJSON(steps.exist-pull-request.outputs.result), 'status') }}
 
       - name: Create Pull Request
         if: contains(fromJSON(steps.exist-pull-request.outputs.result).data, 'url') == false
