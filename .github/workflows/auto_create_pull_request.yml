@@ -24,6 +24,8 @@ jobs:
             })
 
       - run: echo "${GITHUB_REF_CONTEXT#refs/heads/}"
+        env:
+          GITHUB_REF_CONTEXT: ${{ github.ref }}
 
       - name: Create Pull Request
         if: fromJSON(steps.exist_pull_request.outputs.result).status != 200
