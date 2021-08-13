@@ -21,10 +21,12 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
+            const branch = context.ref.replace('refs/heads/','')
+
             return github.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head: ${{ steps.get-branch-name.outputs.BRANCH_NAME }},
+              head: branch,
               base: 'main',
               state: 'open',
             })
@@ -34,10 +36,12 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            return github.pulls.create({
+            const branch = context.ref.replace('refs/heads/','')
+
+            github.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: 'develop to master',
-              head: ${{ steps.get-branch-name.outputs.BRANCH_NAME }},
+              title: `${branch} to master`,
+              head: branch,
               base: 'main'
             })
