@@ -34,7 +34,7 @@ jobs:
       - run: echo ${{ fromJSON(steps.exist-pull-request.outputs.result) }}
 
       - name: Create Pull Request
-        if: !(contains(fromJSON(steps.exist-pull-request.outputs.result).data, 'url')) 
+        if: contains(fromJSON(steps.exist-pull-request.outputs.result).data, 'url') == false
         uses: actions/github-script@v4
         with:
           script: |
