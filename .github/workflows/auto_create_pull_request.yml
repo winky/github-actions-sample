@@ -15,7 +15,7 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            return github.pulls.list({
+            const pullList = github.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
               head: 'develop',
@@ -23,8 +23,10 @@ jobs:
               state: 'open',
             })
 
+            return pullList.status
+
       - name: Create Pull Request
-        if: ${{ fromJSON(steps.exist_pull_request.outputs.result)['status'] }} != 200
+        if: ${{ steps.exist_pull_request.outputs.result }} != "200"
         uses: actions/github-script@v4
         with:
           script: |
