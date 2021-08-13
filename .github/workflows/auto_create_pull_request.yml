@@ -11,7 +11,6 @@ jobs:
 
     steps:
       - name: Create Pull Request
-        if: steps.exist-pull-request.outputs.result != "true"
         uses: actions/github-script@v4
         with:
           script: |
@@ -26,7 +25,7 @@ jobs:
             })
 
             if (!pr.data) {
-              github.pulls.create({
+              await github.pulls.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 title: `${branch} to master`,
