@@ -23,6 +23,8 @@ jobs:
               state: 'open',
             })
 
+      - run: echo "${GITHUB_REF_CONTEXT#refs/heads/}"
+
       - name: Create Pull Request
         if: fromJSON(steps.exist_pull_request.outputs.result).status != 200
         uses: actions/github-script@v4
