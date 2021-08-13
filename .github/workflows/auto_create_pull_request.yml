@@ -20,29 +20,23 @@ jobs:
         id: exist-pull-request
         uses: actions/github-script@v4
         with:
-          result-encoding: string
           script: |
             const branch = context.ref.replace('refs/heads/','')
 
-            const pullList = await github.pulls.list({
+            await github.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
               head: branch,
               base: 'main',
               state: 'open',
+            }).then(e => {
+              retrun e.data ? true : false
             })
-
-            console.log(pullList.data)
-
-            if (pullList.data) {
-              return true
-            } else {
-              return false
-            }
 
       - run: echo ${{ steps.exist-pull-request.outputs.result }}
 
       - name: Create Pull Request
+        if: steps.exist-pull-request.outputs.result != true
         uses: actions/github-script@v4
         with:
           script: |
