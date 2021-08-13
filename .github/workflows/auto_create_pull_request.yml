@@ -23,10 +23,10 @@ jobs:
               state: 'open',
             })
 
-            return pullList.status
+      - run: echo ${{ fromJSON(steps.exist_pull_request.outputs.result)['status'] }}
 
       - name: Create Pull Request
-        if: ${{ steps.exist_pull_request.outputs.result }} != "200"
+        if: ${{ fromJSON(steps.exist_pull_request.outputs.result)['status'] }} != 200
         uses: actions/github-script@v4
         with:
           script: |
