@@ -25,7 +25,7 @@ jobs:
             })
 
             if (!pr.data) {
-              await github.pulls.create({
+              github.pulls.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 title: `${branch} to master`,
