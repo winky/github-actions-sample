@@ -40,7 +40,7 @@ jobs:
               return false
             }
 
-      - run: echo ${{ steps.exist-pull-request.outputs.result) }}
+      - run: echo ${{ steps.exist-pull-request.outputs.result }}
 
       - name: Create Pull Request
         uses: actions/github-script@v4
