@@ -24,7 +24,7 @@ jobs:
           script: |
             const branch = context.ref.replace('refs/heads/','')
 
-            const pullList = github.pulls.list({
+            const pullList = await github.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
               head: branch,
