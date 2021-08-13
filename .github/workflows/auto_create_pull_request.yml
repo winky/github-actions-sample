@@ -19,8 +19,8 @@ jobs:
       - name: Exist Pull Request
         id: exist-pull-request
         uses: actions/github-script@v4
-        result-encoding: string
         with:
+          result-encoding: string
           script: |
             const branch = context.ref.replace('refs/heads/','')
 
