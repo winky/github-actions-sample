@@ -23,15 +23,15 @@ jobs:
           script: |
             const branch = context.ref.replace('refs/heads/','')
 
-            await github.pulls.list({
+            const pr = await github.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
               head: branch,
               base: 'main',
               state: 'open',
-            }).then((e) => {
-              retrun e.data ? true : false
             })
+
+            return pr.data ? true : false
 
       - run: echo ${{ steps.exist-pull-request.outputs.result }}
 
