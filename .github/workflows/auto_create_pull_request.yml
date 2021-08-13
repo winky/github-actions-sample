@@ -32,7 +32,7 @@ jobs:
             })
 
       - run: echo ${{ fromJSON(steps.exist-pull-request.outputs.result).data }}
-      - run: echo ${{ contains(fromJSON(steps.exist-pull-request.outputs.result), 'status') }}
+      - run: echo ${{ contains(fromJSON(fromJSON(steps.exist-pull-request.outputs.result).data), 'url') }}
 
       - name: Create Pull Request
         if: contains(fromJSON(steps.exist-pull-request.outputs.result).data, 'url') == false
