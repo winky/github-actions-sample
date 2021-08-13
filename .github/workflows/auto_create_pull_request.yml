@@ -26,9 +26,9 @@ jobs:
       - run: echo ${{ fromJSON(steps.exist_pull_request.outputs.result)['status'] }}
 
       - name: Create Pull Request
-        if: $status != 200
         env:
-          status: ${{ fromJSON(steps.exist_pull_request.outputs.result)['status'] }}
+          STATUS: ${{ fromJSON(steps.exist_pull_request.outputs.result)['status'] }}
+        if: $STATUS != 200
         uses: actions/github-script@v4
         with:
           script: |
