@@ -15,7 +15,7 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            const pullList = github.pulls.list({
+            return github.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
               head: 'develop',
