@@ -23,9 +23,9 @@ jobs:
               base: 'main',
               state: 'open',
             })
-            console.log(pr.data)
+            console.log(pr.data.length)
 
-            if (!pr.data) {
+            if (!pr.dath.length) {
               github.pulls.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
