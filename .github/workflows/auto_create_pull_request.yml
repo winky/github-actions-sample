@@ -22,7 +22,6 @@ jobs:
         with:
           script: |
             const branch = context.ref.replace('refs/heads/','')
-            console.log(branch)
 
             return github.pulls.list({
               owner: context.repo.owner,
@@ -32,7 +31,7 @@ jobs:
               state: 'open',
             })
 
-      - run: echo ${{ steps.exist-pull-request.outputs.result }}
+      - run: echo ${{ fromJSON(steps.exist-pull-request.outputs.result).data }}
 
       - name: Create Pull Request
         # if: fromJSON(steps.exist-pull-request.outputs.result).status != 200
