@@ -36,7 +36,7 @@ jobs:
       - run: echo ${{ steps.exist-pull-request.outputs.result }}
 
       - name: Create Pull Request
-        if: steps.exist-pull-request.outputs.result != true
+        if: steps.exist-pull-request.outputs.result != "true"
         uses: actions/github-script@v4
         with:
           script: |
