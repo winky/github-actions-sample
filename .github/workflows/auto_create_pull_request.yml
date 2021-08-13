@@ -19,23 +19,29 @@ jobs:
       - name: Exist Pull Request
         id: exist-pull-request
         uses: actions/github-script@v4
+        result-encoding: string
         with:
           script: |
             const branch = context.ref.replace('refs/heads/','')
 
-            return github.pulls.list({
+            const pullList = github.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
               head: branch,
               base: 'main',
               state: 'open',
             })
+            console.log(pullList.data)
 
-      - run: echo ${{ fromJSON(steps.exist-pull-request.outputs.result).data }}
-      - run: echo ${{ contains(fromJSON(fromJSON(steps.exist-pull-request.outputs.result).data), 'url') }}
+            if (pullList.data) {
+              return true
+            } else {
+              false
+            }
+
+      - run: echo ${{ steps.exist-pull-request.outputs.result) }}
 
       - name: Create Pull Request
-        if: contains(fromJSON(steps.exist-pull-request.outputs.result).data, 'url') == false
         uses: actions/github-script@v4
         with:
           script: |
