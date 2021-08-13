@@ -31,12 +31,13 @@ jobs:
               base: 'main',
               state: 'open',
             })
+
             console.log(pullList.data)
 
             if (pullList.data) {
               return true
             } else {
-              false
+              return false
             }
 
       - run: echo ${{ steps.exist-pull-request.outputs.result) }}
