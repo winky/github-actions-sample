@@ -32,8 +32,6 @@ jobs:
               state: 'open',
             })
 
-      - run: echo ${{ toJSON(fromJSON(steps.exist-pull-request.outputs.result).data) }}
-
       - name: Create Pull Request
         if: contains(toJSON(fromJSON(steps.exist-pull-request.outputs.result).data), '[]')
         uses: actions/github-script@v4
