@@ -10,7 +10,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Get branch name
+        id: get-branch-name
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        run: echo '::set-output name=BRANCH_NAME::${GITHUB_REF#refs/heads/}',
+
+      - name: Exist Pull Request
+        id: exist-pull-request
+        uses: actions/github-script@v4
+        
+        with:
+          script: |
+            const branch = context.ref.replace('refs/heads/','')
+
+            return await github.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: branch,
+              base: 'main',
+              state: 'open',
+            })
+
+      - run: echo ${{ toJSON(fromJSON(steps.exist-pull-request.outputs.result).data) }}
+
       - name: Create Pull Request
+        if: contains(toJSON(fromJSON(steps.exist-pull-request.outputs.result).data), '[]')
         uses: actions/github-script@v4
         with:
           script: |
@@ -23,9 +48,8 @@ jobs:
               base: 'main',
               state: 'open',
             })
-            console.log(pr.data.length)
 
-            if (!pr.dath.length) {
+            if (!pr.data) {
               github.pulls.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
