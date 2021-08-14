@@ -41,20 +41,10 @@ jobs:
           script: |
             const branch = context.ref.replace('refs/heads/','')
 
-            const pr = await github.pulls.list({
+            github.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
+              title: `${branch} to master`,
               head: branch,
-              base: 'main',
-              state: 'open',
+              base: 'main'
             })
-
-            if (!pr.data) {
-              github.pulls.create({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                title: `${branch} to master`,
-                head: branch,
-                base: 'main'
-              })
-            }
